@@ -22,6 +22,9 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  phrases       BackedUpPhrase[]
+  lessons       BackedUpLesson[]
+  learner       LearnerProfile?
 
   @@map("user")
 }
@@ -72,4 +75,47 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+// --- Progress backup: the learning, never the chat ---
+// No message text is stored here: not the chat, not the example messages, not the other person's name.
+
+/// One word or phrase from the user's own path, as counted on their phone.
+model BackedUpPhrase {
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text         String
+  kind         String
+  words        Int
+  count        Int
+  selfCount    Int
+  partnerCount Int
+  score        Float
+  updatedAt    DateTime @updatedAt
+
+  @@id([userId, text])
+  @@map("backed_up_phrase")
+}
+
+/// A finished lesson ("u1-l2", "u0-check").
+model BackedUpLesson {
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  completedAt DateTime
+
+  @@id([userId, lessonId])
+  @@map("backed_up_lesson")
+}
+
+/// What the path needs besides the phrases: when the chat was imported, and the user's first name.
+model LearnerProfile {
+  userId         String   @id
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName      String?
+  includePartner Boolean  @default(false)
+  importedAt     DateTime
+  updatedAt      DateTime @updatedAt
+
+  @@map("learner_profile")
 }
