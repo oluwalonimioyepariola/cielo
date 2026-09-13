@@ -25,6 +25,8 @@ model User {
   phrases       BackedUpPhrase[]
   lessons       BackedUpLesson[]
   learner       LearnerProfile?
+  reviews       BackedUpReview[]
+  activityDays  BackedUpActivityDay[]
 
   @@map("user")
 }
@@ -118,4 +120,26 @@ model LearnerProfile {
   updatedAt      DateTime @updatedAt
 
   @@map("learner_profile")
+}
+
+/// A phrase's spaced-review memory card (FSRS): dates and numbers only.
+model BackedUpReview {
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text   String
+  card   Json
+  due    DateTime
+
+  @@id([userId, text])
+  @@map("backed_up_review")
+}
+
+/// A day with learning (YYYY-MM-DD, the learner's own calendar), for the streak.
+model BackedUpActivityDay {
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day    String
+
+  @@id([userId, day])
+  @@map("backed_up_activity_day")
 }
