@@ -6,6 +6,21 @@ Most language apps teach everyone the same vocabulary. Cielo builds a personal c
 
 Built with React Native and Expo (iOS and Android), TypeScript, Expo Router, SQLite, Prisma, Neon Postgres and Better Auth.
 
+<p align="center">
+  <img src="docs/media/demo.gif" width="280" alt="Importing a sample chat, picking which person you are, then playing through the first lesson" />
+</p>
+
+<p align="center"><a href="docs/media/demo.mp4">Watch the full demo video (43s)</a></p>
+
+## Screenshots
+
+| | | | |
+|:-:|:-:|:-:|:-:|
+| <img src="docs/media/welcome.png" width="200" alt="Welcome screen" /> | <img src="docs/media/import.png" width="200" alt="Importing a WhatsApp chat" /> | <img src="docs/media/path.png" width="200" alt="The learning path with a streak" /> | <img src="docs/media/words.png" width="200" alt="Your words, ranked by how often you use them" /> |
+| Welcome | Bring in your chat | Your path | Your words |
+| <img src="docs/media/meet.png" width="200" alt="Meeting a new phrase, next to the message you wrote" /> | <img src="docs/media/build.png" width="200" alt="Building a phrase from word tiles" /> | <img src="docs/media/match.png" width="200" alt="Matching English and Spanish pairs" /> | <img src="docs/media/finish.png" width="200" alt="Lesson finished" /> |
+| Meet a phrase you wrote | Build it | Match the pairs | Lesson learned |
+
 ## How it works
 
 ```
