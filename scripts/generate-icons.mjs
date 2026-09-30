@@ -1,8 +1,8 @@
 // Generates Cielo's app icon, Android adaptive icon layers, splash image and favicon from SVG.
 // The artwork is code: edit the shapes below and run `npm run icons`.
 //
-// The logo is the word "cielo" in Nunito Black, with a beaming sun as the dot of the i.
-// The app icon is that sun on its own, on the Cielo Twilight sky.
+// The logo is the word "cielo" in Nunito Black, with a beaming sun as the dot of the i, on the
+// Cielo Twilight sky. Only the favicon uses the sun on its own, where a word would be unreadable.
 import { mkdirSync } from 'node:fs';
 import sharp from 'sharp';
 
@@ -19,12 +19,12 @@ const SKY = `<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
   </linearGradient>`;
 
 /** The beaming sun: a disc with a soft see-through halo. The halo is 1.75x the disc, in the icon and the wordmark. */
-const sun = (cx, cy, r, haloOpacity = 0.22) =>
-  `<circle cx="${cx}" cy="${cy}" r="${r * 1.75}" fill="${SUN}" fill-opacity="${haloOpacity}" />
+const sun = (cx, cy, r) =>
+  `<circle cx="${cx}" cy="${cy}" r="${r * 1.75}" fill="${SUN}" fill-opacity="0.22" />
    <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
 
-/** The sun mark, centred. `scale` shrinks it (Android adaptive icons keep artwork inside the middle ~66%). */
-const mark = ({ scale = 1, haloOpacity } = {}) => sun(SIZE / 2, SIZE / 2, 190 * scale, haloOpacity);
+/** The sun on its own, centred: the favicon. */
+const mark = () => sun(SIZE / 2, SIZE / 2, 190);
 
 /** The wordmark, centred and `width` wide, with the sun sitting on a dotless ı. */
 function wordmark(width, ink = WHITE) {
@@ -62,12 +62,13 @@ const render = (name, body, background, size = SIZE) =>
 mkdirSync(OUT, { recursive: true });
 await Promise.all([
   // iOS and the store listing: full-bleed square, the system rounds the corners.
-  render('icon.png', mark(), 'url(#sky)'),
-  // Android adaptive icon: the launcher composes these layers and masks them to any shape.
+  render('icon.png', wordmark(800), 'url(#sky)'),
+  // Android adaptive icon: the launcher composes these layers and masks them to any shape, so the
+  // word stays inside the middle ~66%.
   render('android-icon-background.png', '', 'url(#sky)'),
-  render('android-icon-foreground.png', mark({ scale: 0.72 })),
-  // Android 13+ themed icon: one colour, tinted by the system; the halo stays fainter than the sun.
-  render('android-icon-monochrome.png', mark({ scale: 0.72, haloOpacity: 0.4 })),
+  render('android-icon-foreground.png', wordmark(600)),
+  // Android 13+ themed icon: one colour, tinted by the system.
+  render('android-icon-monochrome.png', wordmark(600)),
   // Splash: the wordmark, on the splash background colour set in app.json.
   render('splash-icon.png', wordmark(900)),
   render('favicon.png', mark(), 'url(#sky)', 48),
