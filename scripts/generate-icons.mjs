@@ -34,9 +34,9 @@ function sun(cx, cy, r, { mono = false } = {}) {
   }
   const id = `glow${glows++}`;
   return `<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${halo}" gradientUnits="userSpaceOnUse">
-      <stop offset="${r / halo}" stop-color="#ffe066" stop-opacity="0.85" />
-      <stop offset="0.8" stop-color="#ffb347" stop-opacity="0.45" />
-      <stop offset="1" stop-color="#ff9a5a" stop-opacity="0.36" />
+      <stop offset="${r / halo}" stop-color="#ffe066" stop-opacity="0.95" />
+      <stop offset="0.75" stop-color="#ffbe4d" stop-opacity="0.62" />
+      <stop offset="1" stop-color="#ffa255" stop-opacity="0.5" />
     </radialGradient>
     <circle cx="${cx}" cy="${cy}" r="${halo}" fill="url(#${id})" />
     <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
