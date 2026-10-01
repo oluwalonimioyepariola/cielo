@@ -44,7 +44,8 @@ function wordmark(width, ink = WHITE) {
   const left = (SIZE - width) / 2;
 
   const i = word.boxes(left, baseline)[1];
-  return `<path d="${word.path(left, baseline)}" fill="${ink}" />${sun((i.x0 + i.x1) / 2, i.top - gap - r, r)}`;
+  // The sun goes first so its halo sits behind the letters instead of tinting the top of the i.
+  return `${sun((i.x0 + i.x1) / 2, i.top - gap - r, r)}<path d="${word.path(left, baseline)}" fill="${ink}" />`;
 }
 
 const svg = (body, background) =>
