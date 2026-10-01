@@ -2,7 +2,8 @@
 // The artwork is code: edit the shapes below and run `npm run icons`.
 //
 // The logo is the word "cielo" in Nunito Black, with a beaming sun as the dot of the i, on the
-// Cielo Twilight sky. Only the favicon uses the sun on its own, where a word would be unreadable.
+// Cielo Twilight sky. The app icon is that sun on its own: the wordmark (splash, welcome, README)
+// teaches people that the sun means Cielo, and a single bold shape still reads at home-screen size.
 import { mkdirSync } from 'node:fs';
 import sharp from 'sharp';
 
@@ -18,13 +19,31 @@ const SKY = `<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#5c56ec" /><stop offset="1" stop-color="#3b36bd" />
   </linearGradient>`;
 
-/** The beaming sun: a disc with a soft see-through halo. The halo is 1.75x the disc, in the icon and the wordmark. */
-const sun = (cx, cy, r) =>
-  `<circle cx="${cx}" cy="${cy}" r="${r * 1.75}" fill="${SUN}" fill-opacity="0.22" />
-   <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
+let glows = 0;
 
-/** The sun on its own, centred: the favicon. */
-const mark = () => sun(SIZE / 2, SIZE / 2, 190);
+/**
+ * The beaming sun: a disc with a halo 1.75x its size. The halo warms from yellow at the disc to sunset
+ * peach at its edge; a flat see-through yellow mixes with the purple into a muddy grey instead.
+ * `mono` is for the Android themed icon, where only opacity counts.
+ */
+function sun(cx, cy, r, { mono = false } = {}) {
+  const halo = r * 1.75;
+  if (mono) {
+    return `<circle cx="${cx}" cy="${cy}" r="${halo}" fill="${WHITE}" fill-opacity="0.45" />
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="${WHITE}" />`;
+  }
+  const id = `glow${glows++}`;
+  return `<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${halo}" gradientUnits="userSpaceOnUse">
+      <stop offset="${r / halo}" stop-color="#ffe066" stop-opacity="0.85" />
+      <stop offset="0.8" stop-color="#ffb347" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#ff9a5a" stop-opacity="0.36" />
+    </radialGradient>
+    <circle cx="${cx}" cy="${cy}" r="${halo}" fill="url(#${id})" />
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
+}
+
+/** The sun on its own, centred: the app icon. `scale` shrinks it (Android keeps artwork inside the middle ~66%). */
+const mark = ({ scale = 1, mono } = {}) => sun(SIZE / 2, SIZE / 2, 190 * scale, { mono });
 
 /** The wordmark, centred and `width` wide, with the sun sitting on a dotless ı. */
 function wordmark(width, ink = WHITE) {
@@ -63,13 +82,12 @@ const render = (name, body, background, size = SIZE) =>
 mkdirSync(OUT, { recursive: true });
 await Promise.all([
   // iOS and the store listing: full-bleed square, the system rounds the corners.
-  render('icon.png', wordmark(800), 'url(#sky)'),
-  // Android adaptive icon: the launcher composes these layers and masks them to any shape, so the
-  // word stays inside the middle ~66%.
+  render('icon.png', mark(), 'url(#sky)'),
+  // Android adaptive icon: the launcher composes these layers and masks them to any shape.
   render('android-icon-background.png', '', 'url(#sky)'),
-  render('android-icon-foreground.png', wordmark(600)),
+  render('android-icon-foreground.png', mark({ scale: 0.72 })),
   // Android 13+ themed icon: one colour, tinted by the system.
-  render('android-icon-monochrome.png', wordmark(600)),
+  render('android-icon-monochrome.png', mark({ scale: 0.72, mono: true })),
   // Splash: the wordmark, on the splash background colour set in app.json.
   render('splash-icon.png', wordmark(900)),
   render('favicon.png', mark(), 'url(#sky)', 48),
