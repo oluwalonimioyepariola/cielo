@@ -1,1 +1,168 @@
 @import "tailwindcss";
+
+/*
+ * Cielo's tokens, the same values as the app (src/constants/theme.ts): cream canvas, warm
+ * charcoal ink, one twilight accent, the sun. Flat surfaces; depth comes from colour and hairlines.
+ */
+:root {
+  --canvas: #f9f4f2;
+  --surface: #ffffff;
+  --surface-muted: #f1ebe7;
+  --hairline: #e2ded9;
+  --ink: #2d2c2b;
+  --ink-soft: #44423f;
+  --ink-muted: #63605d;
+  --primary: #4a45d1;
+  --primary-pressed: #3b37a8;
+  --on-primary: #ffffff;
+  --sky: #4a45d1;
+  --night: #2d2a7a;
+  --on-sky: #ffffff;
+  --on-sky-soft: #dedcf8;
+  --sun: #ffce00;
+  --success: #02873e;
+  --success-soft: #e3f4ea;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #1a1918;
+    --surface: #252322;
+    --surface-muted: #2f2c2a;
+    --hairline: #3a3735;
+    --ink: #f4efec;
+    --ink-soft: #d6d0cb;
+    --ink-muted: #a39d98;
+    --primary: #8b86ff;
+    --primary-pressed: #a29eff;
+    --on-primary: #1a1918;
+    --sky: #2d2a7a;
+    --night: #1f1d57;
+    --on-sky-soft: #c9c7ee;
+    --success: #3ddc84;
+    --success-soft: #173d27;
+    --marker-from: 80%;
+    --marker-ink: 90%;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-hairline: var(--hairline);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-primary: var(--primary);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-on-primary: var(--on-primary);
+  --color-sky: var(--sky);
+  --color-night: var(--night);
+  --color-on-sky: var(--on-sky);
+  --color-on-sky-soft: var(--on-sky-soft);
+  --color-sun: var(--sun);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --font-sans: var(--font-nunito);
+  --radius-card: 16px;
+  --radius-plate: 24px;
+  --radius-button: 32px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  scrollbar-color: var(--hairline) var(--canvas);
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--sun);
+  color: #2d2c2b;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* On the sky, the focus ring and selection follow the sky's own colours. */
+.on-sky :focus-visible {
+  outline-color: var(--on-sky);
+}
+
+input,
+textarea {
+  caret-color: var(--primary);
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.marker {
+  /* A highlighter stroke under the phrase Cielo picked out. Thinner and brighter at night. */
+  background-image: linear-gradient(transparent var(--marker-from, 58%), color-mix(in srgb, var(--sun) var(--marker-ink, 70%), transparent) var(--marker-from, 58%));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 2px;
+}
+
+/*
+ * The one authored moment: the hero strip assembles once, stage by stage, and the phrases
+ * Cielo picks out are highlighted as they arrive. Content is fully visible without motion
+ * (Reduce Motion, or before CSS loads).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .stage {
+    animation: stage-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(250ms + var(--i) * 380ms);
+  }
+
+  .marker {
+    background-size: 0% 100%;
+    animation: marker-in 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(700ms + var(--m) * 140ms);
+  }
+}
+
+/* From an already-visible default: the stages slide up into place, readable at every frame. */
+@keyframes stage-in {
+  from {
+    transform: translateY(18px);
+  }
+}
+
+@keyframes marker-in {
+  to {
+    background-size: 100% 100%;
+  }
+}
