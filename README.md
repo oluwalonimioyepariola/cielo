@@ -10,7 +10,7 @@ Built with React Native and Expo (iOS and Android), TypeScript, Expo Router, SQL
   <img src="docs/media/demo.gif" width="280" alt="Importing a sample chat, picking which person you are, then playing through the first lesson" />
 </p>
 
-<p align="center"><a href="docs/media/demo.mp4">Watch the full demo video (43s)</a></p>
+<p align="center"><a href="https://github.com/oluwalonimioyepariola/cielo/releases/latest/download/cielo.apk"><b>Download for Android (APK)</b></a> · <a href="docs/media/demo.mp4">Watch the full demo video (43s)</a></p>
 
 ## Screenshots
 
@@ -64,12 +64,16 @@ scripts/          icon generator, Apple client-secret helper
 
 ## Running it
 
+**On an Android phone:** download the APK from the [latest release](https://github.com/oluwalonimioyepariola/cielo/releases/latest) and open it (Android asks once to allow installs from your browser). Everything runs on the phone; no account needed.
+
+**From source:**
+
 ```bash
 npm install
 npx expo start
 ```
 
-Open it in Expo Go, or press `i` for the iOS simulator. Sign-in and backup need a `.env` (see [`.env.example`](.env.example)); without one, development builds offer a "Skip sign-in" button.
+Open it in Expo Go, or press `i` for the iOS simulator. Sign-in and backup need a `.env` (see [`.env.example`](.env.example)). Until the Apple and Google keys are set up, sign-in is switched off (`SIGN_IN_ENABLED` in [`sign-in.tsx`](src/app/(onboarding)/sign-in.tsx)) and the app offers "Continue without an account".
 
 ```bash
 npm test          # unit tests (node:test)
@@ -82,7 +86,7 @@ npm run icons     # regenerate the app icon and splash from code
 
 - On-device translation for phrases the bank doesn't cover yet (Google ML Kit / Apple Translation)
 - Opening exports straight from WhatsApp's share menu
-- Development and store builds
+- App Store and Play Store releases, and an iOS build
 
 ## License
 
