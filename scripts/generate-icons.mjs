@@ -26,17 +26,21 @@ function mark({ scale = 1, mono = false } = {}) {
     <circle cx="${SIZE / 2}" cy="${SIZE / 2}" r="${r}" fill="${mono ? WHITE : SUN}" />`;
 }
 
-const svg = (body, background) =>
+/** `radius` rounds the background's corners, for places that show the icon without a system mask. */
+const svg = (body, background, radius = 0) =>
   Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
       <defs>${SKY}</defs>
-      ${background ? `<rect width="${SIZE}" height="${SIZE}" fill="${background}" />` : ''}
+      ${background ? `<rect width="${SIZE}" height="${SIZE}" rx="${radius}" fill="${background}" />` : ''}
       ${body}
     </svg>`,
   );
 
-const render = (name, body, background, size = SIZE) =>
-  sharp(svg(body, background)).resize(size, size).png().toFile(`${OUT}/${name}`);
+const render = (path, body, background, size = SIZE, radius = 0) =>
+  sharp(svg(body, background, radius))
+    .resize(size, size)
+    .png()
+    .toFile(path.includes('/') ? path : `${OUT}/${path}`);
 
 mkdirSync(OUT, { recursive: true });
 await Promise.all([
@@ -50,5 +54,7 @@ await Promise.all([
   // Splash: the sun alone, on the splash background colour set in app.json.
   render('splash-icon.png', mark()),
   render('favicon.png', mark(), 'url(#sky)', 48),
+  // README heading: GitHub strips styles, so the rounded corners are baked into the image.
+  render('docs/media/logo.png', mark(), 'url(#sky)', 160, SIZE * 0.225),
 ]);
 console.log(`Icons written to ${OUT}/`);
