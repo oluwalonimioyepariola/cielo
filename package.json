@@ -62,7 +62,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "test": "tsx --test \"src/**/*.test.ts\"",
-    "icons": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs",
+    "postinstall": "prisma generate"
   },
   "private": true
 }
