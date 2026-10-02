@@ -19,6 +19,10 @@ import { signInWithApple, signInWithGoogle, type SignInResult } from '@/lib/sign
 
 const EASE_OUT = Easing.bezier(0.23, 1, 0.32, 1);
 
+// Apple and Google sign-in stay off until their keys are set up. While they're off, every build
+// offers a way in without an account, so the app is never a dead end.
+const SIGN_IN_ENABLED = false;
+
 function continueSignedIn() {
   updateSession({ signedIn: true });
   router.push('/import');
@@ -123,19 +127,23 @@ export default function SignInScreen() {
             icon={{ ios: 'apple.logo' }}
             label="Continue with Apple"
             loading={busy === 'apple'}
-            disabled={busy !== null}
+            disabled={!SIGN_IN_ENABLED || busy !== null}
             onPress={() => signIn('apple')}
           />
           <Button
             variant="secondary"
             label="Continue with Google"
             loading={busy === 'google'}
-            disabled={busy !== null}
+            disabled={!SIGN_IN_ENABLED || busy !== null}
             onPress={() => signIn('google')}
           />
-          {__DEV__ ? (
-            // Development only, until the sign-in keys are in .env. Never in a release build.
-            <Button variant="plain" label="Skip sign-in (development)" disabled={busy !== null} onPress={continueSignedIn} />
+          {!SIGN_IN_ENABLED || __DEV__ ? (
+            <Button
+              variant="plain"
+              label={SIGN_IN_ENABLED ? 'Skip sign-in (development)' : 'Continue without an account'}
+              disabled={busy !== null}
+              onPress={continueSignedIn}
+            />
           ) : null}
         </View>
       </View>
