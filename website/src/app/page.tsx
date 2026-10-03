@@ -1,7 +1,10 @@
+import { SiteHeader } from '@/components/site-header';
+
 export default function Home() {
   return (
-    <main>
-      <h1>Cielo</h1>
-    </main>
+    <>
+      <SiteHeader />
+      <main id="main" />
+    </>
   );
 }
