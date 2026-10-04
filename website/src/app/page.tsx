@@ -1,5 +1,5 @@
 import { Hero } from '@/components/hero';
-import { HowItWorks, HowYouText } from '@/components/sections';
+import { HowItWorks, HowYouText, Privacy } from '@/components/sections';
 import { SiteHeader } from '@/components/site-header';
 
 export default function Home() {
@@ -10,6 +10,7 @@ export default function Home() {
         <Hero />
         <HowItWorks />
         <HowYouText />
+        <Privacy />
       </main>
     </>
   );

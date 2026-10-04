@@ -1,4 +1,4 @@
-import { ArrowIcon } from './icons';
+import { ArrowIcon, CloudUpIcon, LockIcon, PersonIcon } from './icons';
 import { Phone, Screen } from './phone';
 
 const container = 'mx-auto max-w-[1280px] px-5 sm:px-8';
@@ -94,6 +94,79 @@ export function HowYouText() {
         </div>
       </div>
     </section>
+  );
+}
+
+const PROMISES = [
+  {
+    icon: LockIcon,
+    title: 'Read on your phone',
+    body: 'The export is parsed on the device and kept in Cielo’s private storage. No server ever receives it.',
+  },
+  {
+    icon: PersonIcon,
+    title: 'Your messages, not theirs',
+    body: 'By default Cielo learns only from what you wrote. Your person’s messages are used only if you switch that on.',
+  },
+  {
+    icon: CloudUpIcon,
+    title: 'Backup without message text',
+    body: 'The optional backup keeps progress only: phrases, finished lessons, memory cards and your streak. The server rebuilds every upload from known fields, so nothing else can ride along.',
+  },
+];
+
+export function Privacy() {
+  return (
+    <section id="privacy" aria-labelledby="privacy-title" className={`${container} pt-28 sm:pt-36`}>
+      <div className="on-sky relative overflow-hidden rounded-[24px] bg-night px-6 py-14 text-on-sky sm:px-12 sm:py-20">
+        <NightSky />
+        <div className="relative grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+          <div>
+            <h2 id="privacy-title" className={`${sectionTitle} max-w-[13ch]`}>
+              Your chat never leaves your phone.
+            </h2>
+            <p className="mt-6 max-w-[42ch] text-lg leading-[1.6] text-on-sky-soft">
+              A chat with your favourite person is private. Cielo is built so it can teach you without ever uploading it.
+            </p>
+            <p className="mt-6 max-w-[42ch] text-[15px] text-on-sky-soft">Sign-in and backup are switched off in the current Android build.</p>
+          </div>
+          <ul className="divide-y divide-white/15 border-y border-white/15">
+            {PROMISES.map(({ icon: Icon, title, body }) => (
+              <li key={title} className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-5 py-6">
+                <span className="mt-0.5 grid size-10 place-items-center rounded-full bg-white/10 text-sun">
+                  <Icon size={20} />
+                </span>
+                <div>
+                  <h3 className="text-[19px] font-bold">{title}</h3>
+                  <p className="mt-1.5 max-w-[54ch] text-[16px] leading-relaxed text-on-sky-soft">{body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** The app's night: a crescent moon and a few four-point stars. */
+function NightSky() {
+  const stars = [
+    { left: '8%', top: '14%', size: 7 },
+    { left: '38%', top: '8%', size: 5 },
+    { left: '58%', top: '20%', size: 8 },
+    { left: '90%', top: '62%', size: 6 },
+    { left: '30%', top: '88%', size: 5 },
+  ];
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-0">
+      <span className="absolute -top-6 right-10 size-24 rounded-full bg-sun/95 sm:right-16">
+        <span className="absolute -top-3 -left-4 size-24 rounded-full bg-night" />
+      </span>
+      {stars.map((s) => (
+        <span key={s.left} className="absolute rotate-45 rounded-[1px] bg-white/80" style={{ left: s.left, top: s.top, width: s.size, height: s.size }} />
+      ))}
+    </div>
   );
 }
 
