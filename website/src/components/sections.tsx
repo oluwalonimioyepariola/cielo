@@ -1,3 +1,4 @@
+import { ArrowIcon } from './icons';
 import { Phone, Screen } from './phone';
 
 const container = 'mx-auto max-w-[1280px] px-5 sm:px-8';
@@ -44,6 +45,53 @@ export function HowItWorks() {
           <strong className="font-bold text-ink">A beginner day you can skip.</strong> “Primeros pasos” covers greetings first; if
           you know them, a short test lets you move straight to your own phrases.
         </p>
+      </div>
+    </section>
+  );
+}
+
+const REPAIRS = [
+  { from: 'omw', to: 'on my way', why: 'Texting shorthand is expanded.' },
+  { from: 'tommorow', to: 'tomorrow', why: 'Typos are fixed with a 50,000-word dictionary.' },
+  { from: 'loooove', to: 'love', why: 'Stretched words are shortened.' },
+  { from: 'Kemi', to: 'Kemi', why: 'Names are never changed, and never taught.' },
+];
+
+export function HowYouText() {
+  return (
+    <section aria-labelledby="text-title" className={`${container} pt-28 sm:pt-36`}>
+      <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-20">
+        <div>
+          <h2 id="text-title" className={`${sectionTitle} max-w-[14ch]`}>
+            It reads the way you text.
+          </h2>
+          <p className={`${lead} mt-6 max-w-[50ch]`}>
+            Real chats are messy. Before counting anything, Cielo cleans each message: links, numbers and @mentions go, and the
+            words are repaired so “omw” and “on my way” count as the same thing.
+          </p>
+          <dl className="mt-10 max-w-[560px] divide-y divide-hairline border-y border-hairline">
+            {REPAIRS.map((r) => (
+              <div key={r.from} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.1fr)] items-baseline gap-x-4 py-4 sm:grid-cols-[9rem_auto_9rem_minmax(0,1fr)]">
+                {/* A repaired word is struck through; a name stays as it is. */}
+                <dt className={`truncate text-[17px] text-ink-muted ${r.from === r.to ? '' : 'line-through decoration-ink-muted/60 decoration-1'}`}>
+                  {r.from}
+                </dt>
+                <ArrowIcon size={16} className="self-center text-ink-muted" />
+                <dd className="text-[17px] font-bold">{r.to}</dd>
+                <dd className="col-span-3 mt-1 text-[15px] text-ink-muted sm:col-span-1 sm:mt-0">{r.why}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className={`${lead} mt-8 max-w-[50ch]`}>
+            Then it counts phrases up to six words long and ranks them by how often <em className="not-italic font-bold text-ink">you</em>{' '}
+            use them. Out of the box it learns only from your own messages.
+          </p>
+        </div>
+        <div className="mx-auto w-full max-w-[320px]">
+          <Phone>
+            <Screen name="words" alt="The Words tab: did you eat ×5, on my way ×4, call me when you’re free ×2, i love you ×3, each with its Spanish" sizes="320px" />
+          </Phone>
+        </div>
       </div>
     </section>
   );
