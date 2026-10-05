@@ -1,3 +1,4 @@
+import { DownloadButton } from './buttons';
 import { ArrowIcon, CloudUpIcon, LockIcon, PersonIcon } from './icons';
 import { Phone, Screen } from './phone';
 
@@ -167,6 +168,42 @@ function NightSky() {
         <span key={s.left} className="absolute rotate-45 rounded-[1px] bg-white/80" style={{ left: s.left, top: s.top, width: s.size, height: s.size }} />
       ))}
     </div>
+  );
+}
+
+export function Demo() {
+  return (
+    <section id="demo" aria-labelledby="demo-title" className={`${container} pt-28 sm:pt-36`}>
+      <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
+        <div className="mx-auto w-full max-w-[340px] lg:order-2 lg:mx-0 lg:justify-self-center">
+          <Phone>
+            <video
+              className="h-full w-full object-cover"
+              controls
+              playsInline
+              preload="none"
+              poster="/demo-poster.webp"
+              aria-label="Cielo demo: importing the sample chat and finishing the first lesson">
+              <source src="/demo.mp4" type="video/mp4" />
+              <a href="/demo.mp4">Download the demo video</a>
+            </video>
+          </Phone>
+        </div>
+        <div className="lg:order-1">
+          <h2 id="demo-title" className={`${sectionTitle} max-w-[12ch]`}>
+            See it in 43 seconds.
+          </h2>
+          <p className={`${lead} mt-6 max-w-[46ch]`}>
+            From opening the app and importing the sample chat to finishing the first lesson, recorded on an iPhone simulator with
+            nothing sped up but the pauses.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <DownloadButton />
+          </div>
+          <p className="mt-4 text-sm text-ink-muted">The APK installs on Android phones. An iPhone version needs an App Store release first.</p>
+        </div>
+      </div>
+    </section>
   );
 }
 
