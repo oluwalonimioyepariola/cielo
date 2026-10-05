@@ -1,5 +1,6 @@
-import { DownloadButton } from './buttons';
-import { ArrowIcon, CloudUpIcon, LockIcon, PersonIcon } from './icons';
+import { DownloadButton, SecondaryLink } from './buttons';
+import { ArrowIcon, CloudUpIcon, GitHubIcon, LockIcon, PersonIcon } from './icons';
+import { REPO_URL } from './links';
 import { Phone, Screen } from './phone';
 
 const container = 'mx-auto max-w-[1280px] px-5 sm:px-8';
@@ -207,3 +208,60 @@ export function Demo() {
   );
 }
 
+const STACK = [
+  {
+    term: 'Text pipeline',
+    body: 'Parses iOS and Android WhatsApp exports (both date orders, 12- and 24-hour clocks, multi-line messages), strips links and numbers, detects names, and ranks phrases of up to six words. TypeScript, on the phone.',
+  },
+  {
+    term: 'Spelling repair',
+    body: 'A self-contained SymSpell module with a 50,000-word frequency dictionary. It fixes typos and stretched words while leaving names and slang alone.',
+  },
+  {
+    term: 'Learning',
+    body: 'A topic-based path, five exercise types with accent- and typo-tolerant grading, and FSRS spaced repetition.',
+  },
+  {
+    term: 'App',
+    body: 'React Native with Expo SDK 57, Expo Router, SQLite on the device, Reanimated for motion, light and dark mode.',
+  },
+  {
+    term: 'Backend',
+    body: 'Expo Router API routes, Prisma with Neon Postgres, and Better Auth for Sign in with Apple and Google.',
+  },
+  {
+    term: 'Quality',
+    body: '69 unit tests with node:test. The app icon and splash screen are generated from code.',
+  },
+];
+
+export function UnderTheHood() {
+  return (
+    <section id="under-the-hood" aria-labelledby="hood-title" className={`${container} pt-28 sm:pt-36`}>
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+        <div>
+          <h2 id="hood-title" className={`${sectionTitle} max-w-[10ch]`}>
+            Under the hood
+          </h2>
+          <p className={`${lead} mt-6 max-w-[40ch]`}>
+            Cielo is a complete app, from the text-processing pipeline to the backend, and every line of it is open.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <SecondaryLink href={REPO_URL}>
+              <GitHubIcon size={18} />
+              Read the code on GitHub
+            </SecondaryLink>
+          </div>
+        </div>
+        <dl className="divide-y divide-hairline border-y border-hairline">
+          {STACK.map((s) => (
+            <div key={s.term} className="grid gap-x-8 gap-y-1.5 py-6 sm:grid-cols-[10rem_minmax(0,1fr)]">
+              <dt className="text-[17px] font-bold">{s.term}</dt>
+              <dd className="max-w-[62ch] text-[16px] leading-relaxed text-ink-soft">{s.body}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
