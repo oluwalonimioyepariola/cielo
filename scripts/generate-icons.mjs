@@ -69,5 +69,8 @@ await Promise.all([
   render('favicon.png', mark(), 'url(#sky)', 48),
   // README heading: GitHub strips styles, so the icon shape is baked into the image.
   render('docs/media/logo.png', mark(), 'url(#sky)', 160, true),
+  // Website (Next.js picks these up by file name): the browser tab icon and the iOS home-screen icon.
+  render('website/src/app/icon.png', mark(), 'url(#sky)', 512, true),
+  render('website/src/app/apple-icon.png', mark(), 'url(#sky)', 180),
 ]);
 console.log(`Icons written to ${OUT}/`);
