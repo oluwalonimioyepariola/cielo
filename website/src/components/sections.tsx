@@ -1,4 +1,5 @@
 import { DownloadButton, SecondaryLink } from './buttons';
+import { DemoVideo } from './demo-video';
 import { ArrowIcon, CloudUpIcon, GitHubIcon, LockIcon, PersonIcon } from './icons';
 import { REPO_URL } from './links';
 import { Phone, Screen } from './phone';
@@ -178,16 +179,7 @@ export function Demo() {
       <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
         <div className="mx-auto w-full max-w-[340px] lg:order-2 lg:mx-0 lg:justify-self-center">
           <Phone>
-            <video
-              className="h-full w-full object-cover"
-              controls
-              playsInline
-              preload="none"
-              poster="/demo-poster.webp"
-              aria-label="Cielo demo: importing the sample chat and finishing the first lesson">
-              <source src="/demo.mp4" type="video/mp4" />
-              <a href="/demo.mp4">Download the demo video</a>
-            </video>
+            <DemoVideo />
           </Phone>
         </div>
         <div className="lg:order-1">
