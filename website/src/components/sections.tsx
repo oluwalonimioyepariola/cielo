@@ -155,11 +155,15 @@ export function Privacy() {
 /** The app's night: a crescent moon and a few four-point stars. */
 function NightSky() {
   const stars = [
-    { left: '8%', top: '14%', size: 7 },
-    { left: '38%', top: '8%', size: 5 },
-    { left: '58%', top: '20%', size: 8 },
-    { left: '90%', top: '62%', size: 6 },
-    { left: '30%', top: '88%', size: 5 },
+    // Wide screens: in the open sky around the two columns.
+    { left: '3%', top: '6%', size: 6, wide: true },
+    { left: '44%', top: '5%', size: 5, wide: true },
+    { left: '38%', top: '72%', size: 7, wide: true },
+    { left: '55%', top: '93%', size: 5, wide: true },
+    { left: '96%', top: '90%', size: 6, wide: true },
+    // Phones: only in the gutter beside the moon, clear of the text.
+    { left: '72%', top: '4%', size: 5, wide: false },
+    { left: '58%', top: '1.5%', size: 4, wide: false },
   ];
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -167,7 +171,11 @@ function NightSky() {
         <span className="absolute -top-3 -left-4 size-24 rounded-full bg-night" />
       </span>
       {stars.map((s) => (
-        <span key={s.left} className="absolute rotate-45 rounded-[1px] bg-white/80" style={{ left: s.left, top: s.top, width: s.size, height: s.size }} />
+        <span
+          key={`${s.left}-${s.top}`}
+          className={`absolute rotate-45 rounded-[1px] bg-white/80 ${s.wide ? 'hidden lg:block' : 'lg:hidden'}`}
+          style={{ left: s.left, top: s.top, width: s.size, height: s.size }}
+        />
       ))}
     </div>
   );
