@@ -11,7 +11,7 @@ type PhoneProps = {
 /** A plain device frame: dark bezel, rounded screen. Flat, like the rest of the page. */
 export function Phone({ className = '', children }: PhoneProps) {
   return (
-    <div className={`rounded-[44px] bg-[#1c1b1a] p-[9px] ring-1 ring-black/5 dark:ring-white/10 ${className}`}>
+    <div className={`rounded-[44px] bg-[#1c1b1a] p-[9px] ring-1 ring-black/5 ${className}`}>
       <div className="relative overflow-hidden rounded-[36px] bg-canvas" style={{ aspectRatio: `${SCREEN.width} / ${SCREEN.height}` }}>
         {children}
       </div>

@@ -3,6 +3,7 @@
 /*
  * Cielo's tokens, the same values as the app (src/constants/theme.ts): cream canvas, warm
  * charcoal ink, one twilight accent, the sun. Flat surfaces; depth comes from colour and hairlines.
+ * The website is light only; the app itself has a dark mode.
  */
 :root {
   --canvas: #f9f4f2;
@@ -23,29 +24,6 @@
   --success: #02873e;
   --success-soft: #e3f4ea;
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #1a1918;
-    --surface: #252322;
-    --surface-muted: #2f2c2a;
-    --hairline: #3a3735;
-    --ink: #f4efec;
-    --ink-soft: #d6d0cb;
-    --ink-muted: #a39d98;
-    --primary: #8b86ff;
-    --primary-pressed: #a29eff;
-    --on-primary: #1a1918;
-    --sky: #2d2a7a;
-    --night: #1f1d57;
-    --on-sky-soft: #c9c7ee;
-    --success: #3ddc84;
-    --success-soft: #173d27;
-    --marker-from: 80%;
-    --marker-ink: 90%;
-    color-scheme: dark;
-  }
 }
 
 @theme inline {
@@ -129,7 +107,7 @@ p {
 }
 
 .marker {
-  /* A highlighter stroke under the phrase Cielo picked out. Thinner and brighter at night. */
+  /* A highlighter stroke under the phrase Cielo picked out. */
   background-image: linear-gradient(transparent var(--marker-from, 58%), color-mix(in srgb, var(--sun) var(--marker-ink, 70%), transparent) var(--marker-from, 58%));
   background-repeat: no-repeat;
   background-size: 100% 100%;
