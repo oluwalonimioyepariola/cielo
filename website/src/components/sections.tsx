@@ -79,7 +79,7 @@ export function HowYouText() {
                 <dt className={`truncate text-[17px] text-ink-muted ${r.from === r.to ? '' : 'line-through decoration-ink-muted/60 decoration-1'}`}>
                   {r.from}
                 </dt>
-                <ArrowIcon size={16} className="self-center text-ink-muted" />
+                <ArrowIcon size={16} className="mt-[5px] self-start text-ink-muted" />
                 <dd className="text-[17px] font-bold">{r.to}</dd>
                 <dd className="col-span-3 mt-1 text-[15px] text-ink-muted sm:col-span-1 sm:mt-0">{r.why}</dd>
               </div>
