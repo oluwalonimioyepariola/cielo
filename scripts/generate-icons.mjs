@@ -1,63 +1,29 @@
 // Generates Cielo's app icon, Android adaptive icon layers, splash image and favicon from SVG.
 // The artwork is code: edit the shapes below and run `npm run icons`.
 //
-// The logo is the word "cielo" in Nunito Black, with a beaming sun as the dot of the i, on the
-// Cielo Twilight sky. The app icon is that sun on its own: the wordmark (splash, welcome, README)
-// teaches people that the sun means Cielo, and a single bold shape still reads at home-screen size.
+// The logo is the sun exactly as it rises in the app's sky (src/components/sky-hero.tsx): a yellow
+// disc in a soft white halo, on Cielo Twilight.
 import { mkdirSync } from 'node:fs';
 import sharp from 'sharp';
 
-import { loadFont } from './lib/ttf.mjs';
-
 const SUN = '#ffce00';
-const HALO = '#ffe27a';
 const WHITE = '#ffffff';
 const SIZE = 1024;
 const OUT = 'assets/images';
-const font = loadFont('node_modules/@expo-google-fonts/nunito/900Black/Nunito_900Black.ttf');
 
 const SKY = `<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#5c56ec" /><stop offset="1" stop-color="#3b36bd" />
   </linearGradient>`;
 
 /**
- * The beaming sun: a yellow disc in a pale-gold halo 1.75x its size. Both are solid colours; a
- * see-through yellow would mix with the purple into a muddy grey. `mono` is for the Android themed
- * icon, where only opacity counts.
+ * The sun, centred, with a halo 1.5x the disc as in the app. `scale` shrinks it (Android adaptive
+ * icons keep artwork inside the middle ~66%). `mono` is for the Android themed icon, where only
+ * opacity counts.
  */
-function sun(cx, cy, r, { mono = false } = {}) {
-  const halo = r * 1.75;
-  if (mono) {
-    return `<circle cx="${cx}" cy="${cy}" r="${halo}" fill="${WHITE}" fill-opacity="0.45" />
-      <circle cx="${cx}" cy="${cy}" r="${r}" fill="${WHITE}" />`;
-  }
-  return `<circle cx="${cx}" cy="${cy}" r="${halo}" fill="${HALO}" />
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
-}
-
-/** The sun on its own, centred: the app icon. `scale` shrinks it (Android keeps artwork inside the middle ~66%). */
-const mark = ({ scale = 1, mono } = {}) => sun(SIZE / 2, SIZE / 2, 190 * scale, { mono });
-
-/** The wordmark, centred and `width` wide, with the sun sitting on a dotless ı. */
-function wordmark(width, ink = WHITE) {
-  const text = 'cıelo';
-  const tracking = -0.02;
-  const size = (100 * width) / font.layout(text, 100, tracking).width;
-  const word = font.layout(text, size, tracking);
-
-  // Measure at baseline 0, then centre the word plus its sun vertically.
-  const stem = word.boxes(0, 0)[1];
-  const stemWidth = stem.x1 - stem.x0;
-  const r = stemWidth * 0.66;
-  const gap = stemWidth * 0.36;
-  const top = stem.top - gap - 2 * r - r * 0.75;
-  const bottom = Math.max(...word.boxes(0, 0).map((b) => b.bottom));
-  const baseline = SIZE / 2 - (top + bottom) / 2;
-  const left = (SIZE - width) / 2;
-
-  const i = word.boxes(left, baseline)[1];
-  // The sun goes first so its halo sits behind the letters instead of tinting the top of the i.
-  return `${sun((i.x0 + i.x1) / 2, i.top - gap - r, r)}<path d="${word.path(left, baseline)}" fill="${ink}" />`;
+function mark({ scale = 1, mono = false } = {}) {
+  const r = 190 * scale;
+  return `<circle cx="${SIZE / 2}" cy="${SIZE / 2}" r="${r * 1.5}" fill="${WHITE}" fill-opacity="${mono ? 0.45 : 0.12}" />
+    <circle cx="${SIZE / 2}" cy="${SIZE / 2}" r="${r}" fill="${mono ? WHITE : SUN}" />`;
 }
 
 const svg = (body, background) =>
@@ -81,8 +47,8 @@ await Promise.all([
   render('android-icon-foreground.png', mark({ scale: 0.72 })),
   // Android 13+ themed icon: one colour, tinted by the system.
   render('android-icon-monochrome.png', mark({ scale: 0.72, mono: true })),
-  // Splash: the wordmark, on the splash background colour set in app.json.
-  render('splash-icon.png', wordmark(900)),
+  // Splash: the sun alone, on the splash background colour set in app.json.
+  render('splash-icon.png', mark()),
   render('favicon.png', mark(), 'url(#sky)', 48),
 ]);
 console.log(`Icons written to ${OUT}/`);
