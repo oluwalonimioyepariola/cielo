@@ -21,6 +21,16 @@ Built with React Native and Expo (iOS and Android), TypeScript, Expo Router, SQL
 | <img src="docs/media/meet.png" width="200" alt="Meeting a new phrase, next to the message you wrote" /> | <img src="docs/media/build.png" width="200" alt="Building a phrase from word tiles" /> | <img src="docs/media/match.png" width="200" alt="Matching English and Spanish pairs" /> | <img src="docs/media/finish.png" width="200" alt="Lesson finished" /> |
 | Meet a phrase you wrote | Build it | Match the pairs | Lesson learned |
 
+## Website
+
+A one-page site for Cielo lives in [`website/`](website/): Next.js and Tailwind, in the app's own colours, type and sky. It walks through how a chat becomes a course, using real messages from the app's sample chat, and links the APK, the demo and this repo.
+
+<p align="center">
+  <img src="docs/media/website-desktop.png" width="640" alt="The Cielo website on a laptop: the headline, Spanish phrases floating beside it, and the strip showing a chat becoming a lesson" />
+  &nbsp;
+  <img src="docs/media/website-mobile.png" width="180" alt="The Cielo website on a phone" />
+</p>
+
 ## How it works
 
 ```
@@ -60,6 +70,7 @@ src/
   components/     the sky, the learning map, lesson screens, UI primitives
 prisma/           database schema and migrations
 scripts/          icon generator, Apple client-secret helper
+website/          the Cielo website (Next.js), deployed separately
 ```
 
 ## Running it
