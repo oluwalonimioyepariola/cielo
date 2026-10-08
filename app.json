@@ -33,7 +33,7 @@
         {
           "backgroundColor": "#4a45d1",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 220,
+          "imageWidth": 150,
           "dark": {
             "backgroundColor": "#2d2a7a",
             "image": "./assets/images/splash-icon.png"
