@@ -29,9 +29,9 @@ const SPANISH = [
 
 // The phrases float in Spanish the way they do on the app's sign-in screen, tilted a little.
 const FLOATING = [
-  { es: '¿Ya comiste?', en: 'did you eat?', className: 'top-2 left-6 -rotate-[4deg]' },
-  { es: 'Te extraño', en: 'I miss you', className: 'top-[34%] right-0 rotate-[3deg]' },
-  { es: 'Voy en camino', en: 'on my way', className: 'bottom-4 left-0 -rotate-[2deg]' },
+  { es: 'Buenos días', en: 'good morning', className: 'top-2 left-6 -rotate-[4deg]' },
+  { es: 'Voy camino a casa', en: 'on my way home', className: 'top-[37%] right-0 rotate-[3deg]' },
+  { es: 'Llámame cuando estés libre', en: 'call me when you’re free', className: 'bottom-4 left-0 -rotate-[2deg]' },
 ];
 
 export function Hero() {
@@ -65,7 +65,7 @@ export function Hero() {
         </div>
 
         {/* Some of "your" phrases, already in Spanish: the promise, shown rather than told. */}
-        <ul aria-label="Phrases Cielo teaches from the sample chat" className="absolute top-[26%] right-0 hidden h-[56%] w-[330px] lg:block xl:right-8">
+        <ul aria-label="Phrases Cielo teaches from the sample chat" className="absolute top-[16%] right-0 hidden h-[70%] w-[340px] lg:block xl:right-8">
           {FLOATING.map((b) => (
             <li key={b.es} className={`absolute flex items-center gap-3 rounded-[16px] rounded-br-[8px] border border-hairline bg-surface px-4 py-3 ${b.className}`}>
               <span>
