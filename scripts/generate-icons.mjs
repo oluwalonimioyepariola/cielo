@@ -10,6 +10,7 @@ import sharp from 'sharp';
 import { loadFont } from './lib/ttf.mjs';
 
 const SUN = '#ffce00';
+const HALO = '#ffe27a';
 const WHITE = '#ffffff';
 const SIZE = 1024;
 const OUT = 'assets/images';
@@ -19,12 +20,10 @@ const SKY = `<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#5c56ec" /><stop offset="1" stop-color="#3b36bd" />
   </linearGradient>`;
 
-let glows = 0;
-
 /**
- * The beaming sun: a disc with a halo 1.75x its size. The halo warms from yellow at the disc to sunset
- * peach at its edge; a flat see-through yellow mixes with the purple into a muddy grey instead.
- * `mono` is for the Android themed icon, where only opacity counts.
+ * The beaming sun: a yellow disc in a pale-gold halo 1.75x its size. Both are solid colours; a
+ * see-through yellow would mix with the purple into a muddy grey. `mono` is for the Android themed
+ * icon, where only opacity counts.
  */
 function sun(cx, cy, r, { mono = false } = {}) {
   const halo = r * 1.75;
@@ -32,13 +31,7 @@ function sun(cx, cy, r, { mono = false } = {}) {
     return `<circle cx="${cx}" cy="${cy}" r="${halo}" fill="${WHITE}" fill-opacity="0.45" />
       <circle cx="${cx}" cy="${cy}" r="${r}" fill="${WHITE}" />`;
   }
-  const id = `glow${glows++}`;
-  return `<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${halo}" gradientUnits="userSpaceOnUse">
-      <stop offset="${r / halo}" stop-color="#ffe066" stop-opacity="0.95" />
-      <stop offset="0.75" stop-color="#ffbe4d" stop-opacity="0.62" />
-      <stop offset="1" stop-color="#ffa255" stop-opacity="0.5" />
-    </radialGradient>
-    <circle cx="${cx}" cy="${cy}" r="${halo}" fill="url(#${id})" />
+  return `<circle cx="${cx}" cy="${cy}" r="${halo}" fill="${HALO}" />
     <circle cx="${cx}" cy="${cy}" r="${r}" fill="${SUN}" />`;
 }
 
