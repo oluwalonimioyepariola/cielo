@@ -1,4 +1,4 @@
-# Cielo
+# <img src="docs/media/logo.png" width="40" height="40" alt="" align="center" /> Cielo
 
 **Learn Spanish in your own words.** Cielo reads the WhatsApp chat you have with your favourite person and teaches you the Spanish for the things *you* actually say: "did you eat?" becomes *¿Ya comiste?*, "on my way" becomes *Voy en camino*.
 
