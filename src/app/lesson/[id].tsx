@@ -31,6 +31,8 @@ import { setJustCompleted } from '@/lib/celebrate';
 import { getDueTexts, getVocab, markLessonComplete, markLessonsComplete } from '@/lib/db';
 import { recordPractice, REVIEW_ID } from '@/lib/practice';
 import { loadCurriculum } from '@/lib/path';
+import { CHIME_MS, playSound } from '@/lib/sounds';
+import { sayAloud, stopSpeaking } from '@/lib/speak';
 
 // Moving forward through the lesson: each exercise slides in a little from the right.
 const NEXT = FadeInRight.duration(220)
@@ -111,6 +113,24 @@ export default function LessonScreen() {
       outcomes.current,
     );
   }, [finished, setup]);
+
+  // A new phrase, or a Spanish prompt to understand, is said aloud as it arrives (after the slide-in).
+  const current = queue[index];
+  useEffect(() => {
+    if (!current || (current.kind !== 'meet' && current.kind !== 'pick-english')) return;
+    const timer = setTimeout(() => sayAloud(current.item.t.es), 350);
+    return () => clearTimeout(timer);
+  }, [current, index]);
+  useEffect(() => stopSpeaking, []);
+
+  // A little tune when the lesson is done; after a test, only when it was passed.
+  const passedTest = stats.firstTry >= Math.ceil(stats.graded * TEST_PASS_SHARE);
+  const celebrated = useRef(false);
+  useEffect(() => {
+    if (!finished || celebrated.current) return;
+    celebrated.current = true;
+    if (!isTest || passedTest) playSound('finish');
+  }, [finished, isTest, passedTest]);
 
   // Leaving mid-lesson throws its progress away, so ask first. This catches every way out:
   // the close button, Android's back button and the back gesture.
@@ -224,10 +244,11 @@ export default function LessonScreen() {
       return;
     }
 
-    // Haptic in the same frame as the visual result, never on its own.
+    // Haptic and chime in the same frame as the visual result, never on their own.
     Haptics.notificationAsync(
       result.verdict === 'wrong' ? Haptics.NotificationFeedbackType.Error : Haptics.NotificationFeedbackType.Success,
     );
+    playSound(result.verdict === 'wrong' ? 'wrong' : 'right');
     if (!retries.has(index)) {
       setStats((s) => ({
         graded: s.graded + 1,
@@ -235,6 +256,12 @@ export default function LessonScreen() {
       }));
     }
     outcomes.current.set(exercise.item.en, [...(outcomes.current.get(exercise.item.en) ?? []), result.verdict]);
+    // Right answers in Spanish are said aloud, in the form the learner gave ("Adiós", not the main
+    // "Chao"), so their own answer is the last thing they hear.
+    if (result.verdict !== 'wrong' && exercise.kind !== 'pick-english') {
+      const spoken = exercise.kind === 'pick-spanish' ? (answer.selected ?? result.expected) : result.expected;
+      setTimeout(() => sayAloud(spoken), CHIME_MS);
+    }
     setGrade(result);
   };
 
@@ -266,7 +293,7 @@ export default function LessonScreen() {
         items={setup.items.slice(0, 4)}
         correct={stats.firstTry}
         total={stats.graded}
-        passed={stats.firstTry >= Math.ceil(stats.graded * TEST_PASS_SHARE)}
+        passed={passedTest}
         onPass={passTest}
         onStartLessons={startFromLessonOne}
         onBack={() => router.back()}
@@ -358,9 +385,13 @@ export default function LessonScreen() {
                 exercise={exercise}
                 onComplete={() => {
                   Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+                  playSound('right');
                   setMatchDone(true);
                 }}
-                onMistake={() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)}
+                onMistake={() => {
+                  Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+                  playSound('wrong');
+                }}
               />
             ) : null}
           </Animated.View>

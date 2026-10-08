@@ -95,6 +95,30 @@ export default function ProfileScreen() {
             />
           }
         />
+        <Row
+          label="Speak Spanish aloud"
+          detail="Hear each answer as you tap it, and every new phrase."
+          accessory={
+            <Switch
+              value={session.speakAloud}
+              onValueChange={(on) => updateSession({ speakAloud: on })}
+              trackColor={{ true: colors.primary, false: colors.surfaceMuted }}
+              accessibilityLabel="Speak Spanish aloud"
+            />
+          }
+        />
+        <Row
+          label="Sound effects"
+          detail="A chime for right and wrong answers, and a tune when a lesson is done."
+          accessory={
+            <Switch
+              value={session.soundEffects}
+              onValueChange={(on) => updateSession({ soundEffects: on })}
+              trackColor={{ true: colors.primary, false: colors.surfaceMuted }}
+              accessibilityLabel="Sound effects"
+            />
+          }
+        />
       </Group>
 
       <Group title="Your chat">

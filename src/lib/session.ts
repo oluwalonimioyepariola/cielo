@@ -12,10 +12,14 @@ export type Session = {
   /** The brain has produced a word list. The chat file itself may since have been removed. */
   imported: boolean;
   backupProgress: boolean;
+  /** Lessons say the Spanish aloud on their own (the speaker buttons always work). */
+  speakAloud: boolean;
+  /** Chimes for right and wrong answers, and a little tune when a lesson is done. */
+  soundEffects: boolean;
 };
 
 const KEY = 'cielo.session';
-const DEFAULTS: Session = { signedIn: false, imported: false, backupProgress: true };
+const DEFAULTS: Session = { signedIn: false, imported: false, backupProgress: true, speakAloud: true, soundEffects: true };
 
 const listeners = new Set<() => void>();
 let current = read();

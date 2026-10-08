@@ -7,6 +7,7 @@ import { FontFamily, Radius, Space } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { acceptedSpanish, type Exercise, type Teachable } from '@/learning/exercises';
 import type { Grade } from '@/learning/grading';
+import { sayAloud } from '@/lib/speak';
 
 import { EASE_OUT, Instruction, OptionCard, SpeakButton, type OptionState } from './parts';
 
@@ -98,7 +99,11 @@ export function PickView({ exercise, selected, grade, onSelect }: PickProps) {
             key={option}
             state={stateOf(option)}
             disabled={!!grade}
-            onPress={() => onSelect(option)}
+            onPress={() => {
+              // Hear each Spanish answer as you consider it.
+              if (toSpanish) sayAloud(option);
+              onSelect(option);
+            }}
             accessibilityLabel={option}>
             <Text variant="bodyLg">{option}</Text>
           </OptionCard>
@@ -148,7 +153,16 @@ export function BuildView({ exercise, chosen, grade, onChange }: BuildProps) {
         {exercise.tiles.map((word, i) => {
           const used = chosen.includes(i);
           return (
-            <Tile key={`${word}-${i}`} word={word} used={used} disabled={used || !!grade} onPress={() => onChange([...chosen, i])} />
+            <Tile
+              key={`${word}-${i}`}
+              word={word}
+              used={used}
+              disabled={used || !!grade}
+              onPress={() => {
+                sayAloud(word);
+                onChange([...chosen, i]);
+              }}
+            />
           );
         })}
       </View>
@@ -249,6 +263,7 @@ export function MatchView({ exercise, onComplete, onMistake }: MatchProps) {
 
   const tapSpanish = (pair: number) => {
     if (pickedEnglish === null) return;
+    sayAloud(exercise.pairs[pair].t.es);
     if (pair === pickedEnglish) {
       const next = new Set(matched).add(pair);
       setMatched(next);
