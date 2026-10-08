@@ -26,18 +26,31 @@ function mark({ scale = 1, mono = false } = {}) {
     <circle cx="${SIZE / 2}" cy="${SIZE / 2}" r="${r}" fill="${mono ? WHITE : SUN}" />`;
 }
 
-/** `radius` rounds the background's corners, for places that show the icon without a system mask. */
-const svg = (body, background, radius = 0) =>
+/** The iOS icon shape: a superellipse ("squircle"), whose corners curve more smoothly than a rounded rect. */
+function squircle(n = 5) {
+  const half = SIZE / 2;
+  const points = Array.from({ length: 360 }, (_, i) => {
+    const t = (i / 360) * 2 * Math.PI;
+    const x = Math.sign(Math.cos(t)) * Math.abs(Math.cos(t)) ** (2 / n);
+    const y = Math.sign(Math.sin(t)) * Math.abs(Math.sin(t)) ** (2 / n);
+    return `${(half + half * x).toFixed(1)} ${(half + half * y).toFixed(1)}`;
+  });
+  return `M ${points.join(' L ')} Z`;
+}
+
+/** `shaped` cuts the background to the iOS icon shape, for places that show the icon without a system mask. */
+const svg = (body, background, shaped = false) =>
   Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
       <defs>${SKY}</defs>
-      ${background ? `<rect width="${SIZE}" height="${SIZE}" rx="${radius}" fill="${background}" />` : ''}
+      ${background && shaped ? `<path d="${squircle()}" fill="${background}" />` : ''}
+      ${background && !shaped ? `<rect width="${SIZE}" height="${SIZE}" fill="${background}" />` : ''}
       ${body}
     </svg>`,
   );
 
-const render = (path, body, background, size = SIZE, radius = 0) =>
-  sharp(svg(body, background, radius))
+const render = (path, body, background, size = SIZE, shaped = false) =>
+  sharp(svg(body, background, shaped))
     .resize(size, size)
     .png()
     .toFile(path.includes('/') ? path : `${OUT}/${path}`);
@@ -54,7 +67,7 @@ await Promise.all([
   // Splash: the sun alone, on the splash background colour set in app.json.
   render('splash-icon.png', mark()),
   render('favicon.png', mark(), 'url(#sky)', 48),
-  // README heading: GitHub strips styles, so the rounded corners are baked into the image.
-  render('docs/media/logo.png', mark(), 'url(#sky)', 160, SIZE * 0.225),
+  // README heading: GitHub strips styles, so the icon shape is baked into the image.
+  render('docs/media/logo.png', mark(), 'url(#sky)', 160, true),
 ]);
 console.log(`Icons written to ${OUT}/`);
