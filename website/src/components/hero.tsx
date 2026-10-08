@@ -40,7 +40,7 @@ export function Hero() {
       <div className="relative">
         <h1 id="hero-title" className="text-[clamp(3rem,7.2vw,6rem)] leading-[0.98] font-bold tracking-[-0.04em]">
           Learn Spanish in <br className="hidden sm:block" />
-          <mark className="marker bg-transparent text-ink" style={{ '--m': -3 } as React.CSSProperties}>
+          <mark className="marker bg-transparent text-ink" style={{ '--m': -3, '--marker-from': '74%' } as React.CSSProperties}>
             your own words.
           </mark>
         </h1>
