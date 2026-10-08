@@ -189,6 +189,13 @@ function LessonCard() {
           </span>
         ))}
       </div>
+      {/* The word bank as the app leaves it: the used tiles' places stay empty beside the distractors. */}
+      <div className="mt-3 flex flex-wrap gap-2" lang="es" aria-label="Word bank">
+        <span className="rounded-[16px] border border-hairline bg-surface px-3.5 py-1.5 text-[15px] font-bold">pronto</span>
+        <span aria-hidden className="w-[46px] rounded-[16px] bg-surface-muted" />
+        <span className="rounded-[16px] border border-hairline bg-surface px-3.5 py-1.5 text-[15px] font-bold">casa</span>
+        <span aria-hidden className="w-[86px] rounded-[16px] bg-surface-muted" />
+      </div>
       <div className="mt-auto pt-4">
         <p className="flex items-center gap-2 rounded-[16px] bg-success-soft px-3 py-2.5 text-[15px] font-bold text-success">
           <CheckIcon size={16} />
