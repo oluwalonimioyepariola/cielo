@@ -36,16 +36,16 @@ const FLOATING = [
 
 export function Hero() {
   return (
-    <section id="top" aria-labelledby="hero-title" className="mx-auto max-w-[1280px] px-5 pt-12 sm:px-8 sm:pt-16">
+    <section id="top" aria-labelledby="hero-title" className="mx-auto max-w-[1280px] px-5 pt-10 sm:px-8 sm:pt-12">
       <div className="relative">
-        <h1 id="hero-title" className="text-[clamp(3rem,7.2vw,6rem)] leading-[0.98] font-bold tracking-[-0.04em]">
+        <h1 id="hero-title" className="text-[clamp(3rem,6.6vw,5.5rem)] leading-[0.98] font-bold tracking-[-0.04em]">
           Learn Spanish in <br className="hidden sm:block" />
           <mark className="marker bg-transparent text-ink" style={{ '--m': -3, '--marker-from': '74%' } as React.CSSProperties}>
             your own words.
           </mark>
         </h1>
 
-        <div className="mt-8 max-w-[580px] sm:mt-10">
+        <div className="mt-7 max-w-[580px] sm:mt-8">
           <p className="max-w-[50ch] text-lg leading-[1.6] text-ink-soft sm:text-[20px]">
             Cielo reads the WhatsApp chat you have with your favourite person, finds the things you say most, and teaches you the
             Spanish for exactly those. The chat never leaves your phone.
@@ -87,12 +87,12 @@ export function Hero() {
 
 function Pipeline() {
   return (
-    <figure className="on-sky relative mt-10 overflow-hidden rounded-[24px] bg-sky px-5 pt-8 pb-28 text-on-sky sm:mt-12 sm:px-9 sm:pt-9 lg:pb-32">
+    <figure className="on-sky relative mt-10 overflow-hidden rounded-t-[24px] bg-sky px-5 pt-8 pb-28 text-on-sky sm:mt-10 sm:px-9 sm:pt-8 lg:pb-32">
       <Cloud width={58} className="top-[6%] left-[46%] hidden opacity-35 lg:block" />
       <Cloud width={44} className="top-[6%] left-[62%] hidden opacity-25 lg:block" />
       <Sun size={86} className="-top-10 -right-6 origin-top-right scale-[0.55] sm:-right-2 sm:scale-100" />
 
-      <figcaption className="relative mb-7 max-w-[52ch] pr-12 text-[17px] leading-relaxed text-on-sky-soft sm:pr-0">
+      <figcaption className="relative mb-6 max-w-[52ch] pr-12 text-[17px] leading-relaxed text-on-sky-soft sm:pr-0">
         <span className="font-bold text-on-sky">Your chat becomes your course.</span> Here is how Cielo turns four messages from its
         sample chat into a lesson.
       </figcaption>
