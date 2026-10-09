@@ -16,10 +16,12 @@ export type Session = {
   speakAloud: boolean;
   /** Chimes for right and wrong answers, and a little tune when a lesson is done. */
   soundEffects: boolean;
+  /** The "Hear Spanish like a native" sheet has been shown once (it opens again from the You tab). */
+  voicePromptSeen: boolean;
 };
 
 const KEY = 'cielo.session';
-const DEFAULTS: Session = { signedIn: false, imported: false, backupProgress: true, speakAloud: true, soundEffects: true };
+const DEFAULTS: Session = { signedIn: false, imported: false, backupProgress: true, speakAloud: true, soundEffects: true, voicePromptSeen: false };
 
 const listeners = new Set<() => void>();
 let current = read();

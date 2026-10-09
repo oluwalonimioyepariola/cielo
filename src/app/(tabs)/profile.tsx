@@ -1,4 +1,4 @@
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState, type ReactNode } from 'react';
 import { Alert, Pressable, StyleSheet, Switch, View } from 'react-native';
 
@@ -107,6 +107,7 @@ export default function ProfileScreen() {
             />
           }
         />
+        <Row label="Spanish voice" detail="Make Cielo sound like a native speaker." onPress={() => router.push('/voice')} />
         <Row
           label="Sound effects"
           detail="A chime for right and wrong answers, and a tune when a lesson is done."

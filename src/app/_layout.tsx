@@ -65,6 +65,7 @@ export default function RootLayout() {
           <Stack.Protected guard={onboarded}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="lesson/[id]" options={{ presentation: 'fullScreenModal' }} />
+            <Stack.Screen name="voice" options={{ presentation: 'modal' }} />
           </Stack.Protected>
         </Stack>
       </ThemeProvider>

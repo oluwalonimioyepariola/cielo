@@ -1,5 +1,5 @@
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,6 +14,8 @@ import { streakLength } from '@/learning/review';
 import { getActivityDays, getCompletedLessons, getDueTexts } from '@/lib/db';
 import { REVIEW_ID } from '@/lib/practice';
 import { loadCurriculum } from '@/lib/path';
+import { getSession, updateSession } from '@/lib/session';
+import { findBestSpanishVoice } from '@/lib/speak';
 
 function greeting(hour: number) {
   if (hour >= 5 && hour < 12) return { es: 'Buenos días', en: 'Good morning' };
@@ -48,6 +50,23 @@ export default function LearnScreen() {
       setFocusKey((k) => k + 1);
     }, []),
   );
+
+  // Once, on the first visit to the map (after importing, or for learners who imported before this
+  // existed): offer a natural Spanish voice, unless the phone already has one.
+  useEffect(() => {
+    if (getSession().voicePromptSeen) return;
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      const voice = await findBestSpanishVoice();
+      if (cancelled) return;
+      if (voice && voice.tier !== 'standard') updateSession({ voicePromptSeen: true });
+      else router.push('/voice');
+    }, 900);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, []);
 
   const states = useMemo(() => lessonStates(units, completed), [units, completed]);
 
